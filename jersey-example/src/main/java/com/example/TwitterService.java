@@ -43,7 +43,7 @@ public class TwitterService {
 
     /**
      * Method handling HTTP GET requests. The returned object will be sent
-     * to the client as "text/plain" media type.
+     * to the client as "text/json" media type.
      *
      * @return String that will be returned as an application/json response.
      */
