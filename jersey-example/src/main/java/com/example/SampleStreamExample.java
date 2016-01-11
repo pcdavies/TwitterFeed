@@ -38,16 +38,18 @@ public class SampleStreamExample {
 	private final ChunkedOutput<String> output;
 
 	public SampleStreamExample() {
+		System.setProperty("https.proxyHost", "adc-proxy.oracle.com");
+		System.setProperty("https.proxyPort", "80");
 		output = new ChunkedOutput<String>(String.class);
 		engine = new ScriptEngineManager().getEngineByName("javascript");
 		StringBuilder sb = new StringBuilder(1024);
 		//need to start from the classloader to get file when traversing classpath jars for resource
-		URL fileurl = this.getClass().getClassLoader().getResource("twitter-auth.json");
+		URL fileurl = ClassLoader.getSystemResource("twitter-auth.json");
 		requireNonNull(fileurl, "Could not find twitter-auth.json");
 		//we ensure stream and underlying file closes using Java7 try w/ resources stmt
 		try (Stream<String> stream = Files.lines(Paths.get(fileurl.toURI()), StandardCharsets.UTF_8)) {
 			stream.forEach(sb::append);
-			String script = "Java.asJSONCompatible(" + sb.toString() + ")";
+			String script = "Java.asJSONCompatible(" + sb.toString() + ")"; //requires 8u60 or later
 			Map<String, String> contents = (Map<String, String>) engine.eval(script);
 			requireNonNull(contents, "Could not read contents of twitter-auth.json properly");
 			consumerKey = contents.get("consumerKey");
@@ -60,7 +62,7 @@ public class SampleStreamExample {
 		}
 	}
 
-	public void runTwitterStream(ChunkedOutput<String> output, Integer i) throws IOException {
+	public void runTwitterStream(final ChunkedOutput<String> output, final Integer i) throws IOException {
 		final ConsumerCredentials consumerCredentials = new ConsumerCredentials(consumerKey, consumerSecret);
 		final AccessToken storedToken = new AccessToken(token, tokenSecret);
 		final Feature filterFeature = OAuth1ClientSupport
@@ -89,10 +91,10 @@ public class SampleStreamExample {
 		}
 		output.write("{\"tweets\":[");
 		String chunk;
-		for (int msgRead = 0; msgRead < i.intValue(); msgRead++) {
+		final int max = i.intValue()-1;
+		for (int msgRead = 0; msgRead < max; msgRead++) {
 			if ((chunk = chunkedInput.read()) != null) {
-				output.write(chunk);
-				output.write(",");
+				output.write(chunk + ",\n");
 				System.out.println("RAW MSG: " + chunk);
 				//		Object result = engine.eval("Java.asJSONCompatible(" + msg + ")");
 				//		assert (result instanceof Map);
@@ -103,6 +105,9 @@ public class SampleStreamExample {
 				//		});
 				//		System.out.println("}");
 			}
+		}
+		if ((chunk = chunkedInput.read()) != null) {
+			output.write(chunk);	//we write the last line w/o the trailing comma
 		}
 		chunkedInput.close();
 		output.write("]}");
