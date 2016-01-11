@@ -2,15 +2,20 @@ package com.example;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.Request;
+import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -51,6 +56,28 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
+        
+        server.getServerConfiguration().addHttpHandler(new HttpHandler() {
+//            final SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+//            
+//            @Override
+//            public void service(Request request, Response response) throws Exception {
+//                final Date now = new Date();
+//                final String formattedTime;
+//                synchronized (formatter) {
+//                    formattedTime = formatter.format(now);
+//                }
+//                        
+//                response.setContentType("text/plain");
+//                response.getWriter().write("The time using the old Java Date object is: " + formattedTime);
+//            }
+            @Override
+            public void service(Request request, Response response) throws Exception {
+                response.setContentType("text/plain");
+                response.getWriter().write("The time using the new java.time API in Java 8 is: " + LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
+            }
+        }, "/time");
+        
      // Add the StaticHttpHandler to serve static resources from the static folder
 //        server.getServerConfiguration().addHttpHandler(
 //                new StaticHttpHandler("src/main/resources/static/"), "static/");
@@ -64,7 +91,7 @@ public class Main {
         System.out.println(String.format("%s to see the default resource", BASE_URI));
         System.out.println(String.format("%sapplication.wadl to see the WADL resource", BASE_URI));
         System.out.println(String.format("%stweets to see the JAX-RS resource", BASE_URI));
-        System.out.println(String.format("%sstatic/index.html to see the static resource", BASE_URI));
+        System.out.println(String.format("%stime to see the time", BASE_URI));
         System.out.println(String.format("%sjarstatic/index.html to see the jar static resource", BASE_URI));
         System.out.println();
         System.out.println("Press enter to stop the server...");
