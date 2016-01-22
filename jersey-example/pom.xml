@@ -34,6 +34,11 @@
         </dependency>
         -->
         <dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
         </dependency>
@@ -75,7 +80,7 @@
 					      <resource>
 					        <directory>src/main/config</directory>
 						    <includes>
-						    	<include>twitter-auto.json</include>
+						    	<include>twitter-auth.json</include>
 						    </includes>
 					      </resource>
 					    </resources>
@@ -96,6 +101,7 @@
           				<!-- Include the target configuration directory in the beginning of
                			the classpath declaration in the bin scripts -->
 						<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+    					<extraJvmArguments>-XX:+UnlockCommercialFeatures -XX:+FlightRecorder</extraJvmArguments>
     					<programs>
     						<program>
     							<mainClass>com.example.Main</mainClass>
