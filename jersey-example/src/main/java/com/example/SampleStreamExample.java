@@ -38,8 +38,8 @@ public class SampleStreamExample {
 	private final ChunkedOutput<String> output;
 
 	public SampleStreamExample() {
-		System.setProperty("https.proxyHost", "adc-proxy.oracle.com");
-		System.setProperty("https.proxyPort", "80");
+		//System.setProperty("https.proxyHost", "adc-proxy.oracle.com");
+		//System.setProperty("https.proxyPort", "80");
 		output = new ChunkedOutput<String>(String.class);
 		engine = new ScriptEngineManager().getEngineByName("javascript");
 		StringBuilder sb = new StringBuilder(1024);
