@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Optional;
 
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpHandler;
@@ -33,12 +34,10 @@ public class Main {
      * @return Grizzly HTTP server.
      */
     public static HttpServer startServer() throws UnknownHostException {
-       // Base URI the Grizzly HTTP server will listen on
-    	 String port = System.getenv("PORT");
-    	 port = (null != port) ? port : "8080";
-			 String hostName = System.getenv("HOSTNAME");
-			 hostName = (null != hostName) ? hostName : "localhost";
-		   BASE_URI = "http://" + hostName + ":" + port + "/";
+    	// Base URI the Grizzly HTTP server will listen on
+    	final Optional<String> port = Optional.ofNullable(System.getenv("PORT"));
+    	final Optional<String> hostName = Optional.ofNullable(System.getenv("HOSTNAME"));
+		BASE_URI = "http://" + hostName.orElse("localhost") + ":" + port.orElse("8080") + "/";
 
         // create a resource config that scans for JAX-RS resources and providers
         // in com.example package
