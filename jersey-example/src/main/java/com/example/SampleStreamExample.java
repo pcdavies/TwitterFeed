@@ -33,7 +33,7 @@ public class SampleStreamExample {
 	private String consumerSecret;
 	private String token;
 	private String tokenSecret;
-	private ScriptEngine engine;
+	private final ScriptEngine engine;
 	private SampleStreamExample example;
 	private final ChunkedOutput<String> output;
 
