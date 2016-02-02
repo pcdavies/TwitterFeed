@@ -101,7 +101,6 @@
           				<!-- Include the target configuration directory in the beginning of
                			the classpath declaration in the bin scripts -->
 						<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-    					<extraJvmArguments>-XX:+UnlockCommercialFeatures -XX:+FlightRecorder</extraJvmArguments>
     					<programs>
     						<program>
     							<mainClass>com.example.Main</mainClass>
