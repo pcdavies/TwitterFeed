@@ -85,7 +85,7 @@ public class Main {
         // the static folder from the jar file jersey-example-1.0-SNAPSHOT.jar
         server.getServerConfiguration().addHttpHandler(
                 new CLStaticHttpHandler(new URLClassLoader(new URL[] {
-                    new File("target/repo/com/example/jersey-example/1.0-SNAPSHOT/jersey-example-1.0-SNAPSHOT.jar").toURI().toURL()}), "static/"), "/jarstatic");
+                    new File("target/repo/com/example/1.0-SNAPSHOT/jersey-example-1.0-SNAPSHOT.jar").toURI().toURL()}), "static/"), "/jarstatic");
         System.out.println("In order to test the server please try the following urls:");
         System.out.println(String.format("%s to see the default resource", BASE_URI));
         System.out.println(String.format("%sapplication.wadl to see the WADL resource", BASE_URI));
