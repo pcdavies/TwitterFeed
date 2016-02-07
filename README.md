@@ -1,7 +1,8 @@
 Build
 =====
 
-Build the application and the distribution zip file with the build.sh file.  It simply runs `mvn assembly:assembly`.  That will result in a zip file in the target folder that can be uploaded to Java SE CS.
+Build the application and the distribution zip file with the build.sh file.  It simply runs `mvn clean assembly:assembly`.  That will result in a zip file in the target folder that can be uploaded to Java SE CS.
+
 
 Run Locally
 ===========
@@ -16,14 +17,8 @@ Edit config.properties to set your target server, user id, password, and identit
 
 Deploy the application archive using `deploy.sh`.  This will create the service instance and deploy.  
 
-Status
-======
-
-To obtain the status of a service instance use `status.sh`.
 
 Redeploy
 ========
 
-Once a service instance has been created, updated archives are deployed using a different REST API.  
-
-Use `redeploy.sh` to deploy an updated application archive.
+Once a service instance has been created, updated archives are deployed
