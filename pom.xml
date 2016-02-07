@@ -62,7 +62,7 @@
           <!-- Build distribution zip for deployment -->
     			<plugin>
     				<artifactId>maven-assembly-plugin</artifactId>
-    				<version>2.5.5</version>
+    				<version>2.6</version>
     				<configuration>
     					<descriptors>
     						<descriptor>src/assembly/distribution.xml</descriptor>
@@ -72,7 +72,7 @@
 	    			<plugin>
 					  <groupId>org.apache.maven.plugins</groupId>
 					  <artifactId>maven-compiler-plugin</artifactId>
-					  <version>2.1</version>
+					  <version>3.5</version>
 					  <configuration>
 					    <source>1.8</source>
 					    <target>1.8</target>
@@ -90,7 +90,7 @@
     			<plugin>
     				<groupId>org.codehaus.mojo</groupId>
     				<artifactId>appassembler-maven-plugin</artifactId>
-    				<version>1.1.1</version>
+    				<version>1.10</version>
     				<configuration>
     					<assembleDirectory>target</assembleDirectory>
     					<!-- Set the target configuration directory to be used in the bin scripts -->

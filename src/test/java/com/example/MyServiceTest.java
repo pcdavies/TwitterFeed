@@ -1,5 +1,7 @@
 package com.example;
 
+import static org.junit.Assert.assertNotNull;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -9,7 +11,6 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class MyServiceTest {
 
@@ -41,8 +42,18 @@ public class MyServiceTest {
      * Test to see that the message "Got it!" is sent in the response.
      */
     @Test
-    public void testGetIt() {
+    public void testGetTweets() {
         String responseMsg = target.path("tweets").request().get(String.class);
-//        assertEquals("Hello", responseMsg);
+        assertNotNull(responseMsg);
+    }
+    @Test
+    public void testGetTimeseriesIndex() {
+        String responseMsg = target.path("timeseriesIndex").request().get(String.class);
+        assertNotNull(responseMsg);
+    }
+    @Test
+    public void testGetTimeseries() {
+        String responseMsg = target.path("timeseries/1").request().get(String.class);
+        assertNotNull(responseMsg);
     }
 }
