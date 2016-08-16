@@ -8,7 +8,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.server.ChunkedOutput;
 
@@ -46,6 +45,7 @@ public class StaticTweets {
      *
      * @return String that will be returned as an application/json response.
      */
+    /* --- Remove this comment to allow for Filtered Searching */
 	@Path("{search}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,8 +60,8 @@ public class StaticTweets {
 
 		
 	}
-    // private final ScriptEngine engine;
-    //private final ChunkedOutput<String> output;
+	/* --- Remove this comment to allow for Filtered Searching */
+    
 
 
 	private void runTask(ChunkedOutput<String> output, String s) {

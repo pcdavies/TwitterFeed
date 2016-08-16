@@ -6,10 +6,8 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.Optional;
 
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
@@ -17,7 +15,6 @@ import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.grizzly.http.server.Response;
-import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -93,7 +90,7 @@ public class Main {
         System.out.println(String.format("%sapplication.wadl to see the WADL resource", BASE_URI));
         System.out.println(String.format("%stweets to see the JAX-RS resource", BASE_URI));
         System.out.println(String.format("%stime to see the time", BASE_URI));
-        System.out.println(String.format("%sstatictweets<?xxx> to see a set of stored static tweets", BASE_URI));
+        System.out.println(String.format("%sstatictweets</search> to see a set of stored static tweets", BASE_URI));
         System.out.println(String.format("%sjarstatic/index.html to see the jar static resource", BASE_URI));
         System.out.println();
         System.out.println("Press enter to stop the server...");

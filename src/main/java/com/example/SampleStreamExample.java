@@ -144,7 +144,6 @@ public class SampleStreamExample {
             output.write("");;
 
         }
-        System.out.println("!!!! Writing Objects !!!!");
         if (queryString == null) {
         	output.write( sb.toString());
         } else {
