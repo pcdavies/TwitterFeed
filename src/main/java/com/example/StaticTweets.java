@@ -46,12 +46,12 @@ public class StaticTweets {
      *
      * @return String that will be returned as an application/json response.
      */
-	@Path("{c}")
+	@Path("{search}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItWithCount(@PathParam("c") final String s) {
+    public Response getItWithCount(@PathParam("search") final String search) {
 	    	final ChunkedOutput<String> output = new ChunkedOutput<String>(String.class);
-	    	runTask(output, s);
+	    	runTask(output, search);
 	    	return Response.ok()
 	    			.entity(output)
 	    			.header("Access-Control-Allow-Origin", "*")
