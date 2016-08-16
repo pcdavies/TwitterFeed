@@ -26,6 +26,11 @@ import org.glassfish.jersey.client.oauth1.ConsumerCredentials;
 import org.glassfish.jersey.client.oauth1.OAuth1ClientSupport;
 import org.glassfish.jersey.server.ChunkedOutput;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 public class SampleStreamExample {
 
 	private static final String ENDPOINT = "https://stream.twitter.com/1.1/statuses/sample.json";
@@ -60,7 +65,100 @@ public class SampleStreamExample {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+                
+                
 	}
+	
+	public void runStaticTwitterStream(final ChunkedOutput<String> output, final String queryString) throws IOException {
+        StringBuilder sb = new StringBuilder(1024);
+        StringBuilder sbOut = new StringBuilder(1024);
+        URL fileurl = ClassLoader.getSystemResource("SampleTweets.json");
+        requireNonNull(fileurl, "Could not find SampleTweets.json");
+        //we ensure stream and underlying file closes using Java7 try w/ resources stmt
+    	System.out.println("!!!!! Into the code runStaticTwitter !!!!!!!!!!!!!!!!!");
+
+        try (Stream<String> stream = Files.lines(Paths.get(fileurl.toURI()), StandardCharsets.UTF_8)) {
+            stream.forEach(sb::append);
+
+            if (queryString != null) {
+                JsonParser parser = new JsonParser();
+                JsonElement element = parser.parse(sb.toString());
+
+                sbOut.append("{\"tweets\" : [");
+
+                if (element.isJsonObject()) {
+                    JsonObject jsonObject = element.getAsJsonObject();
+                    JsonArray jsonArray = jsonObject.getAsJsonArray("tweets");
+                    System.out.println("ArraryLenght=" + jsonArray.size() + ", Looking for " +
+                                       queryString.toUpperCase());
+                    int cnt = 0;
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        JsonObject tweet = jsonArray.get(i).getAsJsonObject();
+                        JsonElement text = tweet.get("text");
+                        if (text != null) {
+                            // System.out.println(text.getAsString());
+
+
+
+                            if (tweet.toString().toUpperCase().contains(queryString.toUpperCase())) {
+                               //  System.out.println("Found in Tweet Text");
+
+                                cnt++;
+                                sbOut.append(tweet.toString());
+                                continue;
+                            }
+
+                            JsonObject entities = tweet.getAsJsonObject("entities");
+                            if (entities != null) {
+                                JsonArray hashtags = entities.getAsJsonArray("hashtags");
+                                for (int k = 0; hashtags != null && k < hashtags.size(); k++) {
+                                    JsonObject hashtag = hashtags.get(k).getAsJsonObject();
+                                    JsonElement hashtagText = hashtag.get("text");
+
+                                    if (hashtagText != null) {
+
+                                        if (hashtagText.toString().toUpperCase().contains(queryString.toUpperCase())) {
+                                            // System.out.println("Found in Hashtag");
+
+                                            cnt++;
+                                            sbOut.append(tweet.toString());
+
+                                            continue;
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+
+                    }
+                    System.out.println("Found Objects = " + cnt +" in Static Tweets");
+                    sbOut.append("]}");
+
+
+                }
+            }
+
+            //String script = "Java.asJSONCompatible(" + sb.toString() + ")"; //requires 8u60 or later
+            // Map<String, String> contents = (Map<String, String>) engine.eval(script);
+
+        } catch (URISyntaxException | IOException e) {
+            // } catch (URISyntaxException | IOException | ScriptException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            output.write("");;
+
+        }
+        System.out.println("!!!! Writing Objects !!!!");
+        if (queryString == null) {
+        	output.write( sb.toString());
+        } else {
+        	output.write( sbOut.toString());
+        }
+
+    }
+
 
 	public void runTwitterStream(final ChunkedOutput<String> output, final Integer i) throws IOException {
 		final ConsumerCredentials consumerCredentials = new ConsumerCredentials(consumerKey, consumerSecret);
@@ -89,13 +187,15 @@ public class SampleStreamExample {
 					+ response.getStatus() + ", reason: " + response.getStatusInfo().getReasonPhrase()
 					+ ", entity: " + errorEntity);
 		}
-		output.write("{\"tweets\":[");
+                output.write("{\"tweets\":[");
+                // System.out.println("{\"tweets\":[");
 		String chunk;
 		final int max = i.intValue()-1;
 		for (int msgRead = 0; msgRead < max; msgRead++) {
 			if ((chunk = chunkedInput.read()) != null) {
 				output.write(chunk + ",\n");
-				System.out.println("RAW MSG: " + chunk);
+				// System.out.println("RAW MSG: " + chunk);
+                                System.out.println(chunk + ",");
 				//		Object result = engine.eval("Java.asJSONCompatible(" + msg + ")");
 				//		assert (result instanceof Map);
 				//		Map<String, Object> contents = (Map<String, Object>) result;
@@ -108,9 +208,12 @@ public class SampleStreamExample {
 		}
 		if ((chunk = chunkedInput.read()) != null) {
 			output.write(chunk);	//we write the last line w/o the trailing comma
+			System.out.println(chunk);
+
 		}
 		chunkedInput.close();
-		output.write("]}");
+                output.write("]}");
+                // System.out.println("]}");
 		System.out.printf("The client read %d messages!\n", i);
 	}
 

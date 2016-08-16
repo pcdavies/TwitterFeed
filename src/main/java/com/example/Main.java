@@ -77,6 +77,8 @@ public class Main {
             }
         }, "/time");
         
+   
+        
      // Add the StaticHttpHandler to serve static resources from the static folder
 //        server.getServerConfiguration().addHttpHandler(
 //                new StaticHttpHandler("src/main/resources/static/"), "static/");
@@ -91,6 +93,7 @@ public class Main {
         System.out.println(String.format("%sapplication.wadl to see the WADL resource", BASE_URI));
         System.out.println(String.format("%stweets to see the JAX-RS resource", BASE_URI));
         System.out.println(String.format("%stime to see the time", BASE_URI));
+        System.out.println(String.format("%sstatictweets<?xxx> to see a set of stored static tweets", BASE_URI));
         System.out.println(String.format("%sjarstatic/index.html to see the jar static resource", BASE_URI));
         System.out.println();
         System.out.println("Press enter to stop the server...");
@@ -99,3 +102,4 @@ public class Main {
         server.shutdown();
     }
 }
+
