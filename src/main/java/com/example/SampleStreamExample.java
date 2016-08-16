@@ -75,7 +75,6 @@ public class SampleStreamExample {
         URL fileurl = ClassLoader.getSystemResource("SampleTweets.json");
         requireNonNull(fileurl, "Could not find SampleTweets.json");
         //we ensure stream and underlying file closes using Java7 try w/ resources stmt
-    	System.out.println("!!!!! Into the code runStaticTwitter !!!!!!!!!!!!!!!!!");
 
         try (Stream<String> stream = Files.lines(Paths.get(fileurl.toURI()), StandardCharsets.UTF_8)) {
             stream.forEach(sb::append);
@@ -89,19 +88,16 @@ public class SampleStreamExample {
                 if (element.isJsonObject()) {
                     JsonObject jsonObject = element.getAsJsonObject();
                     JsonArray jsonArray = jsonObject.getAsJsonArray("tweets");
-                    System.out.println("ArraryLenght=" + jsonArray.size() + ", Looking for " +
-                                       queryString.toUpperCase());
+                    
                     int cnt = 0;
                     for (int i = 0; i < jsonArray.size(); i++) {
                         JsonObject tweet = jsonArray.get(i).getAsJsonObject();
                         JsonElement text = tweet.get("text");
                         if (text != null) {
-                            // System.out.println(text.getAsString());
 
 
 
                             if (tweet.toString().toUpperCase().contains(queryString.toUpperCase())) {
-                               //  System.out.println("Found in Tweet Text");
 
                                 cnt++;
                                 sbOut.append(tweet.toString());
@@ -118,8 +114,6 @@ public class SampleStreamExample {
                                     if (hashtagText != null) {
 
                                         if (hashtagText.toString().toUpperCase().contains(queryString.toUpperCase())) {
-                                            // System.out.println("Found in Hashtag");
-
                                             cnt++;
                                             sbOut.append(tweet.toString());
 

@@ -52,7 +52,8 @@ public class MyServiceTest {
     public void testGetStaticTweets() {
         String responseMsg = target.path("statictweets").request().get(String.class);
         assertNotNull(responseMsg);
-    }
+    }    
+    
     /*
     @Test
     public void testGetTimeseriesIndex() {
