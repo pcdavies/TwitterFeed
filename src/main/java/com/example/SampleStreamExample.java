@@ -76,10 +76,11 @@ public class SampleStreamExample {
         requireNonNull(fileurl, "Could not find SampleTweets.json");
         //we ensure stream and underlying file closes using Java7 try w/ resources stmt
 
+        int cnt = 0;
+
         try (Stream<String> stream = Files.lines(Paths.get(fileurl.toURI()), StandardCharsets.UTF_8)) {
             stream.forEach(sb::append);
 
-            if (queryString != null) {
                 JsonParser parser = new JsonParser();
                 JsonElement element = parser.parse(sb.toString());
 
@@ -89,17 +90,31 @@ public class SampleStreamExample {
                     JsonObject jsonObject = element.getAsJsonObject();
                     JsonArray jsonArray = jsonObject.getAsJsonArray("tweets");
                     
-                    int cnt = 0;
                     for (int i = 0; i < jsonArray.size(); i++) {
                         JsonObject tweet = jsonArray.get(i).getAsJsonObject();
+                        
+                        
                         JsonElement text = tweet.get("text");
-                        if (text != null) {
+                        
+                        if ( text == null ) {
+                        	continue;
+                        }
+                        
+                        
+                        if (queryString == null ) {
+                            cnt++;
+                            if ( cnt < 5 ) {
+                                System.out.println(tweet.toString());
+                            }
+                            sbOut.append(tweet.toString());
+                            continue;
 
-
+                        } else {
 
                             if (tweet.toString().toUpperCase().contains(queryString.toUpperCase())) {
 
                                 cnt++;
+                                System.out.println(tweet.toString());
                                 sbOut.append(tweet.toString());
                                 continue;
                             }
@@ -115,8 +130,8 @@ public class SampleStreamExample {
 
                                         if (hashtagText.toString().toUpperCase().contains(queryString.toUpperCase())) {
                                             cnt++;
+                                            System.out.println(tweet.toString());
                                             sbOut.append(tweet.toString());
-
                                             continue;
                                         }
                                     }
@@ -127,28 +142,19 @@ public class SampleStreamExample {
 
 
                     }
-                    System.out.println("Found Objects = " + cnt +" in Static Tweets");
-                    sbOut.append("]}");
-
-
+                    
                 }
-            }
 
-            //String script = "Java.asJSONCompatible(" + sb.toString() + ")"; //requires 8u60 or later
-            // Map<String, String> contents = (Map<String, String>) engine.eval(script);
 
         } catch (URISyntaxException | IOException e) {
-            // } catch (URISyntaxException | IOException | ScriptException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             output.write("");;
 
         }
-        if (queryString == null) {
-        	output.write( sb.toString());
-        } else {
-        	output.write( sbOut.toString());
-        }
+       
+        System.out.println( cnt +" Tweets in StaticTweets");
+        sbOut.append("]}");
+        output.write( sbOut.toString());
 
     }
 
