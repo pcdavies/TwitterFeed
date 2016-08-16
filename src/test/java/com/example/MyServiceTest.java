@@ -53,6 +53,7 @@ public class MyServiceTest {
         System.out.println(responseMsg.toString());
         assertNotNull(responseMsg);
     } 
+    */
     
     @Test
     public void testGetTweets() {
@@ -69,5 +70,5 @@ public class MyServiceTest {
         String responseMsg = target.path("timeseries/1").request().get(String.class);
         assertNotNull(responseMsg);
     }
-    */
+    
 }
