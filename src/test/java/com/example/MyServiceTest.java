@@ -41,17 +41,24 @@ public class MyServiceTest {
     /**
      * Test to see that the message "Got it!" is sent in the response.
      */
+     @Test
+    public void testGetStaticTweets() {
+        String responseMsg = target.path("statictweets").request().get(String.class);
+        assertNotNull(responseMsg);
+    } 
+    
+    @Test
+    public void testGetStaticSearchTweets() {
+        String responseMsg = target.path("statictweets/alpha").request().get(String.class);
+        System.out.println(responseMsg.toString());
+        assertNotNull(responseMsg);
+    } 
+    /*
     @Test
     public void testGetTweets() {
         String responseMsg = target.path("tweets").request().get(String.class);
         assertNotNull(responseMsg);
     }
-    @Test
-    public void testGetStaticTweets() {
-        String responseMsg = target.path("statictweets").request().get(String.class);
-        assertNotNull(responseMsg);
-    }    
-    
     @Test
     public void testGetTimeseriesIndex() {
         String responseMsg = target.path("timeseriesIndex").request().get(String.class);
@@ -62,4 +69,5 @@ public class MyServiceTest {
         String responseMsg = target.path("timeseries/1").request().get(String.class);
         assertNotNull(responseMsg);
     }
+    */
 }
