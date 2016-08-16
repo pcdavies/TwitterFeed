@@ -54,12 +54,14 @@ public class MyServiceTest {
         assertNotNull(responseMsg);
     } 
     */
-    
+    /*
     @Test
     public void testGetTweets() {
         String responseMsg = target.path("tweets").request().get(String.class);
         assertNotNull(responseMsg);
     }
+    */
+    
     @Test
     public void testGetTimeseriesIndex() {
         String responseMsg = target.path("timeseriesIndex").request().get(String.class);
