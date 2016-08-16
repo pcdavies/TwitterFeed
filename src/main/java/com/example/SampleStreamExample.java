@@ -94,49 +94,47 @@ public class SampleStreamExample {
                         JsonObject tweet = jsonArray.get(i).getAsJsonObject();
                         
                         
-                        JsonElement text = tweet.get("text");
                         
-                        if ( text == null ) {
+                        if ( cnt < 10 ) {
+                            System.out.println(tweet.toString());
+                        }
+                        sbOut.append(tweet.toString());
+                        cnt++;
+
+                        JsonElement text = tweet.get("text");
+
+                        if ( text == null || queryString == null) {
                         	continue;
                         }
                         
                         
-                        if (queryString == null ) {
+                      
+
+                        if (tweet.toString().toUpperCase().contains(queryString.toUpperCase())) {
+
                             cnt++;
-                            if ( cnt < 5 ) {
-                                System.out.println(tweet.toString());
-                            }
+                            System.out.println(tweet.toString());
                             sbOut.append(tweet.toString());
                             continue;
+                        }
 
-                        } else {
+                        JsonObject entities = tweet.getAsJsonObject("entities");
+                        if (entities != null) {
+                            JsonArray hashtags = entities.getAsJsonArray("hashtags");
+                            for (int k = 0; hashtags != null && k < hashtags.size(); k++) {
+                                JsonObject hashtag = hashtags.get(k).getAsJsonObject();
+                                JsonElement hashtagText = hashtag.get("text");
 
-                            if (tweet.toString().toUpperCase().contains(queryString.toUpperCase())) {
+                                if (hashtagText != null) {
 
-                                cnt++;
-                                System.out.println(tweet.toString());
-                                sbOut.append(tweet.toString());
-                                continue;
-                            }
-
-                            JsonObject entities = tweet.getAsJsonObject("entities");
-                            if (entities != null) {
-                                JsonArray hashtags = entities.getAsJsonArray("hashtags");
-                                for (int k = 0; hashtags != null && k < hashtags.size(); k++) {
-                                    JsonObject hashtag = hashtags.get(k).getAsJsonObject();
-                                    JsonElement hashtagText = hashtag.get("text");
-
-                                    if (hashtagText != null) {
-
-                                        if (hashtagText.toString().toUpperCase().contains(queryString.toUpperCase())) {
-                                            cnt++;
-                                            System.out.println(tweet.toString());
-                                            sbOut.append(tweet.toString());
-                                            continue;
-                                        }
+                                    if (hashtagText.toString().toUpperCase().contains(queryString.toUpperCase())) {
+                                        cnt++;
+                                        System.out.println(tweet.toString());
+                                        sbOut.append(tweet.toString());
+                                        continue;
                                     }
-
                                 }
+
                             }
                         }
 
