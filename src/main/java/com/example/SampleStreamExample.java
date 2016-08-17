@@ -94,26 +94,31 @@ public class SampleStreamExample {
                         JsonObject tweet = jsonArray.get(i).getAsJsonObject();
                         
                         
+                        if ( queryString == null ) {
                         
-                        if ( cnt < 10 ) {
-                            System.out.println(tweet.toString());
+	                        if ( cnt < 10 ) {
+	                            System.out.println(tweet.toString());
+	                        }
+	                        sbOut.append(tweet.toString());
+	                        cnt++;
+	                        continue;
                         }
-                        sbOut.append(tweet.toString());
-                        cnt++;
 
                         JsonElement text = tweet.get("text");
-
-                        if ( text == null || queryString == null) {
+                        
+                        // text == null on deleted tweets
+                        if ( text == null ) {
                         	continue;
                         }
-                        
-                        
-                      
-
+   
                         if (tweet.toString().toUpperCase().contains(queryString.toUpperCase())) {
 
+	                    if ( cnt < 10 ) {
+
+	                        System.out.println(tweet.toString());
+	                    }
                             cnt++;
-                            System.out.println(tweet.toString());
+
                             sbOut.append(tweet.toString());
                             continue;
                         }
@@ -128,8 +133,10 @@ public class SampleStreamExample {
                                 if (hashtagText != null) {
 
                                     if (hashtagText.toString().toUpperCase().contains(queryString.toUpperCase())) {
+            	                        if ( cnt < 10 ) {
+            	                        	System.out.println(tweet.toString());
+            	                        }
                                         cnt++;
-                                        System.out.println(tweet.toString());
                                         sbOut.append(tweet.toString());
                                         continue;
                                     }
