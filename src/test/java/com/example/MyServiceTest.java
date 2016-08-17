@@ -50,7 +50,6 @@ public class MyServiceTest {
     @Test
     public void testGetStaticSearchTweets() {
         String responseMsg = target.path("statictweets/alpha").request().get(String.class);
-        System.out.println(responseMsg.toString());
         assertNotNull(responseMsg);
     } 
     */
