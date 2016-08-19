@@ -69,100 +69,102 @@ public class SampleStreamExample {
                 
 	}
 	
-	public void runStaticTwitterStream(final ChunkedOutput<String> output, final String queryString) throws IOException {
-        StringBuilder sb = new StringBuilder(1024);
-        StringBuilder sbOut = new StringBuilder(1024);
-        URL fileurl = ClassLoader.getSystemResource("SampleTweets.json");
-        requireNonNull(fileurl, "Could not find SampleTweets.json");
-        //we ensure stream and underlying file closes using Java7 try w/ resources stmt
+	public void runStaticTwitterStream(final ChunkedOutput<String> output, final String queryString)
+			throws IOException {
+		StringBuilder sb = new StringBuilder(1024);
+		StringBuilder sbOut = new StringBuilder(1024);
+		URL fileurl = ClassLoader.getSystemResource("SampleTweets.json");
+		requireNonNull(fileurl, "Could not find SampleTweets.json");
+		// we ensure stream and underlying file closes using Java7 try w/
+		// resources stmt
 
-        int cnt = 0;
+		int cnt = 0;
 
-        try (Stream<String> stream = Files.lines(Paths.get(fileurl.toURI()), StandardCharsets.UTF_8)) {
-            stream.forEach(sb::append);
+		try (Stream<String> stream = Files.lines(Paths.get(fileurl.toURI()), StandardCharsets.UTF_8)) {
+			stream.forEach(sb::append);
 
-                JsonParser parser = new JsonParser();
-                JsonElement element = parser.parse(sb.toString());
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(sb.toString());
 
-                sbOut.append("{\"tweets\" : [");
+			sbOut.append("{\"tweets\" : [");
 
-                if (element.isJsonObject()) {
-                    JsonObject jsonObject = element.getAsJsonObject();
-                    JsonArray jsonArray = jsonObject.getAsJsonArray("tweets");
-                    
-                    for (int i = 0; i < jsonArray.size(); i++) {
-                        JsonObject tweet = jsonArray.get(i).getAsJsonObject();
-                        
-                        
-                        if ( queryString == null ) {
-                        
-	                        if ( cnt < 10 ) {
-	                            System.out.println(tweet.toString());
-	                        }
-	                        sbOut.append(tweet.toString());
-	                        cnt++;
-	                        continue;
-                        }
+			if (element.isJsonObject()) {
+				JsonObject jsonObject = element.getAsJsonObject();
+				JsonArray jsonArray = jsonObject.getAsJsonArray("tweets");
 
-                        JsonElement text = tweet.get("text");
-                        
-                        // text == null on deleted tweets
-                        if ( text == null ) {
-                        	continue;
-                        }
-   
-                        if (tweet.toString().toUpperCase().contains(queryString.toUpperCase())) {
+				for (int i = 0; i < jsonArray.size(); i++) {
+					JsonObject tweet = jsonArray.get(i).getAsJsonObject();
 
-	                    if ( cnt < 10 ) {
+					if (queryString == null) {
 
-	                        System.out.println(tweet.toString());
-	                    }
-                            cnt++;
+						if (cnt < 10) {
+							System.out.println(tweet.toString());
+						}
+						if (cnt > 0) {
+							sbOut.append(",\n");
+						}
+						sbOut.append(tweet.toString());
+						cnt++;
+						continue;
+					}
 
-                            sbOut.append(tweet.toString());
-                            continue;
-                        }
+					JsonElement text = tweet.get("text");
 
-                        JsonObject entities = tweet.getAsJsonObject("entities");
-                        if (entities != null) {
-                            JsonArray hashtags = entities.getAsJsonArray("hashtags");
-                            for (int k = 0; hashtags != null && k < hashtags.size(); k++) {
-                                JsonObject hashtag = hashtags.get(k).getAsJsonObject();
-                                JsonElement hashtagText = hashtag.get("text");
+					// text == null on deleted tweets
+					if (text == null) {
+						continue;
+					}
 
-                                if (hashtagText != null) {
+					if (tweet.toString().toUpperCase().contains(queryString.toUpperCase())) {
 
-                                    if (hashtagText.toString().toUpperCase().contains(queryString.toUpperCase())) {
-            	                        if ( cnt < 10 ) {
-            	                        	System.out.println(tweet.toString());
-            	                        }
-                                        cnt++;
-                                        sbOut.append(tweet.toString());
-                                        continue;
-                                    }
-                                }
+						if (cnt < 10) {
 
-                            }
-                        }
+							System.out.println(tweet.toString());
+						}
+						if (cnt > 0) {
+							sbOut.append(",\n");
+						}
+						sbOut.append(tweet.toString());
+						cnt++;
+						continue;
+					}
 
+					JsonObject entities = tweet.getAsJsonObject("entities");
+					if (entities != null) {
+						JsonArray hashtags = entities.getAsJsonArray("hashtags");
+						for (int k = 0; hashtags != null && k < hashtags.size(); k++) {
+							JsonObject hashtag = hashtags.get(k).getAsJsonObject();
+							JsonElement hashtagText = hashtag.get("text");
 
-                    }
-                    
-                }
+							if (hashtagText != null) {
 
+								if (hashtagText.toString().toUpperCase().contains(queryString.toUpperCase())) {
+									if (cnt < 10) {
+										System.out.println(tweet.toString());
+									}
+									if (cnt > 0) {
+										sbOut.append(",\n");
+									}
+									sbOut.append(tweet.toString());
+									cnt++;
+									continue;
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (URISyntaxException | IOException e) {
+			e.printStackTrace();
+			output.write("");
+			;
+		}
 
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
-            output.write("");;
-
-        }
-       
-        System.out.println( cnt +" Tweets in StaticTweets");
-        sbOut.append("]}");
-        output.write( sbOut.toString());
-
-    }
-
+		System.out.println(cnt + " Tweets in StaticTweets");
+		sbOut.append("]}");
+		output.write(sbOut.toString());
+	}
+ 
 
 	public void runTwitterStream(final ChunkedOutput<String> output, final Integer i) throws IOException {
 		final ConsumerCredentials consumerCredentials = new ConsumerCredentials(consumerKey, consumerSecret);
