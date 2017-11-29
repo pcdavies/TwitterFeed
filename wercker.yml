@@ -29,11 +29,12 @@ build:
         name: maven build
         code: |
           ./build.sh
-pushimage
-    - internal/docker-push:
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        tag: $DOCKER_TAG
-        repository: $DOCKER_REPOSITORY
-        registry: https://index.docker.io/v1/
-        cmd:  pipeline/source/target/bin/start
+publish:
+    steps:
+        - internal/docker-push:
+            username: $DOCKER_USERNAME
+            password: $DOCKER_PASSWORD
+            tag: $DOCKER_TAG
+            repository: $DOCKER_REPOSITORY
+            registry: https://index.docker.io/v1/
+            cmd:  pipeline/source/target/bin/start
