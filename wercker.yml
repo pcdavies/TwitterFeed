@@ -23,6 +23,8 @@ build:
     # Read more about steps on our dev center:
     # http://devcenter.wercker.com/docs/steps/index.html
   steps:
+    - install-packages:
+        packages: maven
     - script:
         name: maven build
         code: |
