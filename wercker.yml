@@ -26,4 +26,4 @@ build:
     - script:
         name: maven build
         code: |
-          build.sh
+          ./build.sh
