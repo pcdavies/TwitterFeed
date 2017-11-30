@@ -32,7 +32,7 @@ build:
 publish:
     steps:
         - internal/docker-push:
-            repository: wcr.io/derekoneil/twitterfeed            
+            repository: wcr.io/derekoneil/twitter-feed            
             cmd:  pipeline/source/target/bin/start
 
 push-release:
