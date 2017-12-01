@@ -31,6 +31,12 @@ build:
           ./build.sh
 dev:
     steps:
+        - install-packages:
+            packages: maven
+        - script:
+            name: maven build
+            code: |
+              ./build.sh
         - script:
             name: start dev
             code: |
