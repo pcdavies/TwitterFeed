@@ -50,12 +50,12 @@ public class Main {
      * @param args
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         final HttpServer server = startServer();
-        
+
         server.getServerConfiguration().addHttpHandler(new HttpHandler() {
 //            final SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-//            
+//
 //            @Override
 //            public void service(Request request, Response response) throws Exception {
 //                final Date now = new Date();
@@ -63,7 +63,7 @@ public class Main {
 //                synchronized (formatter) {
 //                    formattedTime = formatter.format(now);
 //                }
-//                        
+//
 //                response.setContentType("text/plain");
 //                response.getWriter().write("The time using the old Java Date object is: " + formattedTime);
 //            }
@@ -73,9 +73,9 @@ public class Main {
                 response.getWriter().write("The time using the new java.time API in Java 8 is: " + LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
             }
         }, "/time");
-        
-   
-        
+
+
+
      // Add the StaticHttpHandler to serve static resources from the static folder
 //        server.getServerConfiguration().addHttpHandler(
 //                new StaticHttpHandler("src/main/resources/static/"), "static/");
@@ -93,10 +93,17 @@ public class Main {
         System.out.println(String.format("%sstatictweets</search> to see a set of stored static tweets", BASE_URI));
         System.out.println(String.format("%sjarstatic/index.html to see the jar static resource", BASE_URI));
         System.out.println();
-        System.out.println("Press enter to stop the server...");
-        
-        System.in.read();
-        server.shutdown();
+        System.out.println("Press enter to NOT stop the server...");
+
+				try {
+					System.out.println("Joining current thread...");
+					Thread.currentThread().join();
+					System.out.println("Joined current thread.");
+				}
+				catch (Exception e) {
+					System.out.println("Caught Exception: " + e);
+				}
+        // System.in.read();
+        // server.shutdown();
     }
 }
-

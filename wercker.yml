@@ -2,7 +2,7 @@
 # Docker Hub https://registry.hub.docker.com/_/debian/
 # Read more about containers on our dev center
 # http://devcenter.wercker.com/docs/containers/index.html
-box: 
+box:
   id: openjdk
   ports:
     - "8080"
@@ -29,10 +29,16 @@ build:
         name: maven build
         code: |
           ./build.sh
+dev:
+    steps:
+        - script:
+            name: start dev
+            code: |
+                pwd; ls; sh target/bin/start
 publish:
     steps:
         - internal/docker-push:
-            repository: wcr.io/derekoneil/twitter-feed            
+            repository: wcr.io/derekoneil/twitter-feed
             cmd:  pipeline/source/target/bin/start
 
 push-release:
@@ -42,21 +48,21 @@ push-release:
         working-dir: /pipeline/source
         ports: "8080"
         cmd: ./target/bin/start
-        
+
 #delete any existing Wercker secret before creating, to accommodate secret changes
 inject-secret:
     box:
         id: alpine
         cmd: /bin/sh
     steps:
-    
+
     - kubectl:
         name: delete secret
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
         command: delete secret wercker; echo delete registry secret
-        
+
     - kubectl:
         name: create secret
         server: $KUBERNETES_MASTER
