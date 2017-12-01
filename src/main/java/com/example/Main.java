@@ -70,7 +70,7 @@ public class Main {
             @Override
             public void service(Request request, Response response) throws Exception {
                 response.setContentType("text/plain");
-                response.getWriter().write("The time using the new java.time API in Java 8 is: " + LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
+                response.getWriter().write("The NEW time using the new java.time API in Java 8 is: " + LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
             }
         }, "/time");
 
