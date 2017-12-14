@@ -1,27 +1,11 @@
-# This references a standard debian container from the
-# Docker Hub https://registry.hub.docker.com/_/debian/
-# Read more about containers on our dev center
-# http://devcenter.wercker.com/docs/containers/index.html
+
 box:
   id: openjdk
   ports:
     - "8080"
-# You can also use services such as databases. Read more on our dev center:
-# http://devcenter.wercker.com/docs/services/index.html
-# services:
-    # - postgres4
-    # http://devcenter.wercker.com/docs/services/postgresql.html
 
-    # - mongo
-    # http://devcenter.wercker.com/docs/services/mongodb.html
-
-# This is the build pipeline. Pipelines are the core of wercker
-# Read more about pipelines on our dev center
-# http://devcenter.wercker.com/docs/pipelines/index.html
 build:
-    # Steps make up the actions in your pipeline
-    # Read more about steps on our dev center:
-    # http://devcenter.wercker.com/docs/steps/index.html
+
   steps:
     - install-packages:
         packages: maven
@@ -29,17 +13,6 @@ build:
         name: maven build
         code: |
           ./build.sh
-dev:
-    steps:
-        - script:
-            name: start dev
-            code: |
-                pwd; ls; sh target/bin/start
-publish:
-    steps:
-        - internal/docker-push:
-            repository: wcr.io/derekoneil/twitter-feed
-            cmd:  pipeline/source/target/bin/start
 
 push-release:
   steps:
