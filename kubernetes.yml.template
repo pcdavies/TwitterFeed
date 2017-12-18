@@ -5,7 +5,7 @@ metadata:
   labels:
     commit: ${WERCKER_GIT_COMMIT}
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: twitter-feed
@@ -21,7 +21,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: twitter-feed
-          containerPort: 8080
+          containerPort: ${PORT}
           protocol: TCP
       imagePullSecrets:
         - name: wercker          
@@ -36,22 +36,9 @@ metadata:
 spec:
   ports:
   - port: 30000
-    targetPort: 8080
+    targetPort: ${PORT}
   selector:
     app: twitter-feed
     commit: ${WERCKER_GIT_COMMIT}
   type: LoadBalancer
 ---
-#apiVersion: extensions/v1beta1
-#kind: Ingress
-#metadata:
- # name: hello-world-ingress
-#spec:
- # rules:
-  #- host: hello-world.example.domain
-   # http:
-    #  paths:
-     # - path:
-      #  backend:
-       #   serviceName: hello-world
-        #  servicePort: 80802
