@@ -11,7 +11,7 @@ build:
         packages: maven
     - script:
         name: maven build
-        code: ./build.sh
+        code: mvn clean assembly:assembly
 
 #Push the docker image with our built and tested application to the Oracle Container Registry
 push-release:
