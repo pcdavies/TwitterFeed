@@ -6,7 +6,7 @@ box:
 
 #Build our application using Maven, just as we always have
 build:
-  steps:
+  steps: 
     - install-packages:
         packages: maven
     - script:
