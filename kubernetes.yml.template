@@ -40,5 +40,5 @@ spec:
   selector:
     app: twitter-feed
     commit: ${WERCKER_GIT_COMMIT}
-  type: LoadBalancer
+  type: ClusterIP
 ---
