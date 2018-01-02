@@ -14,7 +14,6 @@ spec:
       labels:
         app: twitter-feed
         commit: ${WERCKER_GIT_COMMIT}
-        color: ${COLOR}
     spec:
       containers:
       - name: twitter-feed
@@ -25,7 +24,7 @@ spec:
           containerPort: ${PORT}
           protocol: TCP
       imagePullSecrets:
-        - name: wercker
+        - name: wercker          
 ---
 apiVersion: v1
 kind: Service

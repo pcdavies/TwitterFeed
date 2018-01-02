@@ -6,7 +6,7 @@ box:
 
 #Build our application using Maven, just as we always have
 build:
-  steps: 
+  steps:
     - install-packages:
         packages: maven
     - script:
@@ -21,6 +21,7 @@ push-release:
         working-dir: /pipeline/source
         ports: $PORT
         cmd: sh target/bin/start
+
 #Inject our Wercker application token into Kubernetes to authenticate container pulls
 #delete any existing Wercker secret before creating, to accommodate secret changes
 inject-secret:
