@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: product-catalog-app
+  labels:
+    commit: b607789ba3f33dae498589323c8ba71088e53dda
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product-catalog-app
+  template:
+    metadata:
+      labels:
+        app: product-catalog-app
+        commit: b607789ba3f33dae498589323c8ba71088e53dda
+    spec:
+      containers:
+      - name: product-catalog-app-container
+        image: wcr.io/derekoneil/alpha-office-product-catalog:master-b607789ba3f33dae498589323c8ba71088e53dda
+        imagePullPolicy: Always
+        ports:
+        - name: pc-app-port
+          containerPort: 80
+          protocol: TCP
+      imagePullSecrets:
+        - name: wercker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-catalog-service
+  labels:
+    app: product-catalog-app
+    commit: b607789ba3f33dae498589323c8ba71088e53dda
+spec:
+  ports:
+  - port: 30000
+    targetPort: 80
+  selector:
+    app: product-catalog-app
+    commit: b607789ba3f33dae498589323c8ba71088e53dda
+  type: LoadBalancer
+---
