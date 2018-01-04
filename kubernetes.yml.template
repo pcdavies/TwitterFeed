@@ -24,6 +24,17 @@ spec:
         - name: twitter-feed
           containerPort: ${PORT}
           protocol: TCP
+        volumeMounts:
+          - name: podinfo
+            mountPath: /etc
+            readOnly: false
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+            - path: "labels"
+              fieldRef:
+                fieldPath: metadata.labels
       imagePullSecrets:
         - name: wercker
 ---
