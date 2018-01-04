@@ -50,6 +50,7 @@ public class StaticTweets {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getItWithCount(@PathParam("search") final String search) {
+	    	System.out.println("Searching for tweets containing: " + search);
 	    	final ChunkedOutput<String> output = new ChunkedOutput<String>(String.class);
 	    	runTask(output, search);
 	    	return Response.ok()
