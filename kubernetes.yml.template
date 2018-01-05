@@ -51,6 +51,7 @@ spec:
     targetPort: ${PORT}
   selector:
     app: twitter-feed
+    color: ${COLOR}
     commit: ${WERCKER_GIT_COMMIT}
   type: ClusterIP
 ---
