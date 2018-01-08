@@ -26,7 +26,7 @@ spec:
           protocol: TCP
         volumeMounts:
           - name: podinfo
-            mountPath: /
+            mountPath: /tmp
             readOnly: false
       volumes:
         - name: podinfo
