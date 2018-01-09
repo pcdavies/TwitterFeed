@@ -8,6 +8,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.charset.Charset;
 
 import org.glassfish.jersey.server.ChunkedOutput;
 
@@ -16,7 +19,7 @@ import org.glassfish.jersey.server.ChunkedOutput;
  */
 @Path("statictweets")
 public class StaticTweets {
-	
+
     private static SampleStreamExample example = new SampleStreamExample();
 
     /**
@@ -28,9 +31,9 @@ public class StaticTweets {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getIt() {
-    	
+
     	final ChunkedOutput<String> output = new ChunkedOutput<String>(String.class);
-    	
+
     	runTask(output,null);
     	return Response.ok()
     			.entity(output)
@@ -45,7 +48,7 @@ public class StaticTweets {
      *
      * @return String that will be returned as an application/json response.
      */
-    
+
     @Path("{search}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -59,15 +62,35 @@ public class StaticTweets {
 	    			.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 	    			.build();
 
-		
+
     }
-	
-   
-    
+
+
+		@Path("color")
+		@GET
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getColor() throws IOException {
+				System.out.println("Checking color");
+				String color = "yellow";
+				byte[] encoded = Files.readAllBytes(Paths.get("/tmp/labels"));
+			  color = new String(encoded, Charset.defaultCharset());
+				System.out.println(color);
+				return Response.ok()
+						.entity(color)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+						.build();
+
+
+		}
+
+
+
+
 	private void runTask(ChunkedOutput<String> output, String s) {
         new Thread(() -> {
             try {
-            	example.runStaticTwitterStream(output, s); 
+            	example.runStaticTwitterStream(output, s);
             } catch (IOException e) {
 				e.printStackTrace();
             } finally {
@@ -83,6 +106,6 @@ public class StaticTweets {
     	// the output will be probably returned even before
         // a first chunk is written by the new thread
 	}
-    
+
 
 }
