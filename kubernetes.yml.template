@@ -4,6 +4,7 @@ metadata:
   name: twitter-feed
   labels:
     commit: ${WERCKER_GIT_COMMIT}
+    color: green
 spec:
   replicas: 2
   template:
