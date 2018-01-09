@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.Charset;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import org.glassfish.jersey.server.ChunkedOutput;
 
@@ -74,7 +76,13 @@ public class StaticTweets {
 				String color = "yellow";
 				byte[] encoded = Files.readAllBytes(Paths.get("/tmp/labels"));
 			  color = new String(encoded, Charset.defaultCharset());
-				System.out.println(color);
+				Pattern p = Pattern.compile("(?<=color=.)(\w+)");
+				Matcher m = p.matcher(color);
+
+				if (m.find()) {
+				    color = m.group(1);
+				}
+				
 				return Response.ok()
 						.entity(color)
 						.header("Access-Control-Allow-Origin", "*")
