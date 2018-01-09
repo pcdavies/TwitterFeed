@@ -14,7 +14,6 @@ spec:
       labels:
         app: twitter-feed
         commit: ${WERCKER_GIT_COMMIT}
-        color: green
     spec:
       containers:
       - name: twitter-feed
@@ -22,21 +21,10 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: twitter-feed
-          containerPort: 8080
+          containerPort: ${PORT}
           protocol: TCP
-        volumeMounts:
-          - name: podinfo
-            mountPath: /tmp
-            readOnly: false
-      volumes:
-        - name: podinfo
-          downwardAPI:
-            items:
-            - path: "labels"
-              fieldRef:
-                fieldPath: metadata.labels
       imagePullSecrets:
-        - name: wercker
+        - name: wercker          
 ---
 apiVersion: v1
 kind: Service
@@ -48,9 +36,8 @@ metadata:
 spec:
   ports:
   - port: 30000
-    targetPort: 8080
+    targetPort: ${PORT}
   selector:
     app: twitter-feed
-    color: blue
   type: ClusterIP
 ---
