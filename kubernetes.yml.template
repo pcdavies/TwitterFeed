@@ -14,6 +14,7 @@ spec:
       labels:
         app: twitter-feed
         commit: ${WERCKER_GIT_COMMIT}
+        color: blue
     spec:
       containers:
       - name: twitter-feed
@@ -23,6 +24,17 @@ spec:
         - name: twitter-feed
           containerPort: ${PORT}
           protocol: TCP
+          volumeMounts:
+            - name: podinfo
+              mountPath: /tmp
+              readOnly: false
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+            - path: "labels"
+              fieldRef:
+                fieldPath: metadata.labels
       imagePullSecrets:
         - name: wercker          
 ---
@@ -39,5 +51,6 @@ spec:
     targetPort: ${PORT}
   selector:
     app: twitter-feed
+    color: blue
   type: ClusterIP
 ---
