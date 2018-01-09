@@ -76,13 +76,13 @@ public class StaticTweets {
 				String color = "yellow";
 				byte[] encoded = Files.readAllBytes(Paths.get("/tmp/labels"));
 			  color = new String(encoded, Charset.defaultCharset());
-				Pattern p = Pattern.compile("(?<=color=.)(\w+)");
+				Pattern p = Pattern.compile("(?<=color=.)(\\w+)");
 				Matcher m = p.matcher(color);
 
 				if (m.find()) {
 				    color = m.group(1);
 				}
-				
+
 				return Response.ok()
 						.entity(color)
 						.header("Access-Control-Allow-Origin", "*")
