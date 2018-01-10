@@ -24,10 +24,10 @@ spec:
         - name: twitter-feed
           containerPort: ${PORT}
           protocol: TCP
-          volumeMounts:
-            - name: podinfo
-              mountPath: /tmp
-              readOnly: false
+        volumeMounts:
+          - name: podinfo
+            mountPath: /tmp
+            readOnly: false
       volumes:
         - name: podinfo
           downwardAPI:
