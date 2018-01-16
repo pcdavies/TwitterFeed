@@ -1,6 +1,5 @@
 package com.example;
 
-
 import java.io.IOException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,7 +12,6 @@ import java.nio.file.Paths;
 import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-
 import org.glassfish.jersey.server.ChunkedOutput;
 
 /**
@@ -50,7 +48,7 @@ public class StaticTweets {
      *
      * @return String that will be returned as an application/json response.
      */
-
+/* --- Remove this comment to allow for Filtered Searching 
     @Path("{search}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -66,6 +64,7 @@ public class StaticTweets {
 
 
     }
+/* --- Remove this comment to allow for Filtered Searching */	
 
 
 		@Path("color")
