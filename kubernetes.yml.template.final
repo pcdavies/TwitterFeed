@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: twitter-feed
+  name: twitter-feed-v2
   labels:
     commit: ${WERCKER_GIT_COMMIT}
 spec:
@@ -14,6 +14,7 @@ spec:
       labels:
         app: twitter-feed
         commit: ${WERCKER_GIT_COMMIT}
+        color: green
     spec:
       containers:
       - name: twitter-feed
@@ -23,6 +24,17 @@ spec:
         - name: twitter-feed
           containerPort: ${PORT}
           protocol: TCP
+        volumeMounts:
+          - name: podinfo
+            mountPath: /tmp
+            readOnly: false
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+            - path: "labels"
+              fieldRef: 
+                fieldPath: metadata.labels
       imagePullSecrets:
         - name: wercker          
 ---
@@ -39,6 +51,6 @@ spec:
     targetPort: ${PORT}
   selector:
     app: twitter-feed
-    commit: ${WERCKER_GIT_COMMIT}
+    color: blue
   type: ClusterIP
 ---
