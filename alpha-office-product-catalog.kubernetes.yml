@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: product-catalog-app-container
-        image: wcr.io/container-native-workshop/alpha-office-product-catalog:master-266b0c33dedc8d8ca4adf66279ca9435d14871ec
+        image: derekoneil/alpha-office-product-catalog
         imagePullPolicy: Always
         ports:
         - name: pc-app-port
