@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: product-catalog-app
   labels:
-    commit: b607789ba3f33dae498589323c8ba71088e53dda
+    commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
 spec:
   replicas: 2
   selector:
@@ -13,7 +13,7 @@ spec:
     metadata:
       labels:
         app: product-catalog-app
-        commit: b607789ba3f33dae498589323c8ba71088e53dda
+        commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
     spec:
       containers:
       - name: product-catalog-app-container
@@ -32,13 +32,13 @@ metadata:
   name: product-catalog-service
   labels:
     app: product-catalog-app
-    commit: b607789ba3f33dae498589323c8ba71088e53dda
+    commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
 spec:
   ports:
   - port: 30000
     targetPort: 80
   selector:
     app: product-catalog-app
-    commit: b607789ba3f33dae498589323c8ba71088e53dda
+    commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
   type: LoadBalancer
 ---
