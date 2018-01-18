@@ -48,13 +48,13 @@ public class StaticTweets {
      *
      * @return String that will be returned as an application/json response.
      */
-/* --- Remove this comment to allow for Filtered Searching 
     @Path("{search}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getItWithCount(@PathParam("search") final String search) {
 	    	System.out.println("Searching for tweets containing: " + search);
 	    	final ChunkedOutput<String> output = new ChunkedOutput<String>(String.class);
+	    	search = ""; //---Remove this line to enable searching
 	    	runTask(output, search);
 	    	return Response.ok()
 	    			.entity(output)
@@ -64,7 +64,6 @@ public class StaticTweets {
 
 
     }
---- Remove this comment to allow for Filtered Searching */	
 
 
 	@Path("color")
