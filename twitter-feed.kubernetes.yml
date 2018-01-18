@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: twitter-feed-v2
   labels:
-    commit: ${WERCKER_GIT_COMMIT}
+    commit: 9a8fa77277c4a8c3c96d96d4b804e83c26ac6cc0
 spec:
   replicas: 2
   selector:
@@ -13,12 +13,12 @@ spec:
     metadata:
       labels:
         app: twitter-feed
-        commit: ${WERCKER_GIT_COMMIT}
+        commit: 9a8fa77277c4a8c3c96d96d4b804e83c26ac6cc0
         color: green
     spec:
       containers:
       - name: twitter-feed
-        image: ${DOCKER_REPO}:${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT}
+        image: wcr.io/derekoneil/twitter-feed:master-9a8fa77277c4a8c3c96d96d4b804e83c26ac6cc0
         imagePullPolicy: Always
         ports:
         - name: twitter-feed
@@ -44,13 +44,13 @@ metadata:
   name: twitter-feed
   labels:
     app: twitter-feed
-    commit: ${WERCKER_GIT_COMMIT}
+    commit: 9a8fa77277c4a8c3c96d96d4b804e83c26ac6cc0
 spec:
   ports:
   - port: 30000
     targetPort: 8080
   selector:
     app: twitter-feed
-    color: blue
+    color: green
   type: ClusterIP
 ---
