@@ -64,32 +64,32 @@ public class StaticTweets {
 
 
     }
-/* --- Remove this comment to allow for Filtered Searching */	
+--- Remove this comment to allow for Filtered Searching */	
 
 
-		@Path("color")
-		@GET
-		@Produces(MediaType.APPLICATION_JSON)
-		public Response getColor() throws IOException {
-				System.out.println("Checking color");
-				String color = "yellow";
-				byte[] encoded = Files.readAllBytes(Paths.get("/tmp/labels"));
-			  color = new String(encoded, Charset.defaultCharset());
-				Pattern p = Pattern.compile("(?<=color=.)(\\w+)");
-				Matcher m = p.matcher(color);
+	@Path("color")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getColor() throws IOException {
+			System.out.println("Checking color");
+			String color = "yellow";
+			byte[] encoded = Files.readAllBytes(Paths.get("/tmp/labels"));
+		  color = new String(encoded, Charset.defaultCharset());
+			Pattern p = Pattern.compile("(?<=color=.)(\\w+)");
+			Matcher m = p.matcher(color);
 
-				if (m.find()) {
-				    color = m.group(1);
-				}
+			if (m.find()) {
+			    color = m.group(1);
+			}
 
-				return Response.ok()
-						.entity(color)
-						.header("Access-Control-Allow-Origin", "*")
-						.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-						.build();
+			return Response.ok()
+					.entity(color)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.build();
 
 
-		}
+	}
 
 
 
