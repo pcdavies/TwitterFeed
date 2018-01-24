@@ -1,3 +1,10 @@
+About
+=====
+
+This repository contains the code for the Twitter feed microservice that you will use during the [Oracle Container Native Application Development workshop](http://oracle.github.io/learning-library/workshops/container-native-development).
+During the workshop you will Dockerize this Java microservice using Wercker, configure a CI/CD pipeline, and deploy the microservice to Oracle's managed Kubernetes service.
+
+
 Build
 =====
 
@@ -13,12 +20,4 @@ On successful build, you can run the app with `sh target/bin/start` which is a s
 Deploy
 ======
 
-Edit config.properties to set your target server, user id, password, and identity domain
-
-Deploy the application archive using `deploy.sh`.  This will create the service instance and deploy.  
-
-
-Redeploy
-========
-
-Once a service instance has been created, updated archives are deployed
+You will create Wercker pipelines to build, publish, and deploy this microservice during the workshop.
