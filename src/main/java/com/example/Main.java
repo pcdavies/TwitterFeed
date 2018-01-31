@@ -93,10 +93,18 @@ public class Main {
         System.out.println(String.format("%sstatictweets</search> to see a set of stored static tweets", BASE_URI));
         System.out.println(String.format("%sjarstatic/index.html to see the jar static resource", BASE_URI));
         System.out.println();
-        System.out.println("Press enter to stop the server...");
+//         System.out.println("Press enter to stop the server...");
         
-        System.in.read();
-        server.shutdown();
+	try {
+		System.out.println("Joining current thread...");
+		Thread.currentThread().join();
+		System.out.println("Joined current thread.");
+	}
+	catch (Exception e) {
+		System.out.println("Caught Exception: " + e);
+	}
+//         System.in.read();
+//         server.shutdown();
     }
 }
 
