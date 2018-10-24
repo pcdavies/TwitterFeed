@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: product-catalog-app-container
-        image: derekoneil/alpha-office-product-catalog
+        image: derekoneil/alpha-office-product-catalog:master-4ca160fd05c003e5067fd6d9c8213656b24b962c
         imagePullPolicy: Always
         ports:
         - name: pc-app-port
