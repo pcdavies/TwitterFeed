@@ -36,9 +36,10 @@ metadata:
 spec:
   ports:
   - port: 30000
+    nodePort:30000
     targetPort: 80
   selector:
     app: product-catalog-app
     commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
-  type: LoadBalancer
+  type: NodePort
 ---
